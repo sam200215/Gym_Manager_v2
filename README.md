@@ -64,3 +64,19 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## INICIALIZAR EL PROYECTO
+Instalar dependencias: Ejecuta el siguiente comando en la terminal para instalar las dependencias del proyecto:
+composer install
+
+Copiar el archivo de entorno: Copia el archivo .env.example a .env:
+
+Generar la clave de la aplicación: Ejecuta el siguiente comando para generar una nueva clave de aplicación:
+php artisan key:generate
+
+Configurar el archivo .env: Abre el archivo .env y configura las variables de entorno según tu entorno de desarrollo, especialmente las relacionadas con la base de datos.
+
+Ejecutar migraciones: Ejecuta las migraciones para crear las tablas necesarias en la base de datos:
+php artisan migrate
+
+Iniciar el servidor de desarrollo: Finalmente, inicia el servidor de desarrollo de Laravel: php artisan serve

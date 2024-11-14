@@ -71,16 +71,32 @@
             </div>
         </div>
 
+        <!-- Mensaje de Registro (inicialmente oculto) -->
+<div class="col-md-6" id="registerMessage" style="display: none;">
+    <div class="card h-100 bg-light">
+        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+            <h3>¡Únete a nosotros!</h3>
+            <p class="text-muted">Crea tu cuenta en unos simples pasos</p>
+            <p>Regístrate para acceder a todas nuestras funcionalidades y servicios exclusivos.</p>
+            <div class="mt-4">
+                <p>¿Ya tienes una cuenta?</p>
+                <button class="btn btn-outline-primary" onclick="toggleForms()">Iniciar Sesión</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
         <!-- Formulario de Registro (inicialmente oculto) -->
-        <div class="col-md-6" id="registerForm" style="display: none;">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h3 class="text-center">Registro</h3>
-                    <p class="text-center text-muted">Crea tu nueva cuenta</p>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+<div class="col-md-6" id="registerForm" style="display: none;">
+    <div class="card h-100">
+        <div class="card-header">
+            <h3 class="text-center">Registro</h3>
+            <p class="text-center text-muted">Crea tu nueva cuenta</p>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
                         <div class="form-group mb-3">
                             <label for="name">{{ __('Nombre') }}</label>
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" 
@@ -149,19 +165,11 @@
 @endsection
 
 
-<script>
-    function toggleForms() {
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const loginMessage = document.getElementById('loginMessage');
-        const registerMessage = document.getElementById('registerMessage');
+{{-- Agregar esto justo antes del cierre del body --}}
+@push('scripts')
+    <script src="{{ asset('js/auth.js') }}"></script>
+@endpush
 
-        loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
-        registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
-        loginMessage.style.display = loginMessage.style.display === 'none' ? 'block' : 'none';
-        registerMessage.style.display = registerMessage.style.display === 'none' ? 'block' : 'none';
-    }
-</script>
 <style>
 .card {
     margin: 1rem;

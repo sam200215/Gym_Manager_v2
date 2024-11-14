@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rol_id',
     ];
 
     /**
@@ -43,5 +44,32 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Obtiene el rol asociado al usuario
+     */
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class);
+    }
+
+    /**
+     * Verifica si el usuario tiene un permiso específico
+     */
+    public function hasPermiso($permisoNombre)
+    {
+        return $this->rol->rolporpermisos()
+            ->whereHas('permiso', function($query) use ($permisoNombre) {
+                $query->where('nombre', $permisoNombre);
+            })->exists();
+    }
+
+    /**
+     * Verifica si el usuario tiene un rol específico
+     */
+    public function hasRol($rolNombre)
+    {
+        return $this->rol->nombre === $rolNombre;
     }
 }

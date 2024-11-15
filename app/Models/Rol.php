@@ -21,7 +21,7 @@ class Rol extends Model
 {
     
     protected $perPage = 20;
-
+    protected $table = 'rols';
     /**
      * The attributes that are mass assignable.
      *
@@ -29,13 +29,27 @@ class Rol extends Model
      */
     protected $fillable = ['nombre', 'descripcion'];
 
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+/**
+     * Obtiene los permisos del rol a través de la tabla pivote
      */
     public function rolporpermisos()
     {
-        return $this->hasMany(\App\Models\Rolporpermiso::class, 'id', 'rol_id');
+        return $this->hasMany(Rolporpermiso::class, 'rol_id', 'id');
     }
-    
+
+    /**
+     * Obtiene los permisos asociados al rol
+     */
+    public function permisos()
+    {
+        return $this->belongsToMany(Permiso::class, 'rolporpermisos', 'rol_id', 'permiso_id');
+    }
+
+    /**
+     * Verifica si el rol tiene un permiso específico
+     */
+    public function hasPermiso($permisoNombre)
+    {
+        return $this->permisos()->where('nombre', $permisoNombre)->exists();
+    }
 }

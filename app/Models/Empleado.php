@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\RegistraBitacora;
 /**
  * Class Empleado
  *
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Empleado extends Model
 {
-    
+    use RegistraBitacora;
     protected $perPage = 20;
 
     /**

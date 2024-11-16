@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\RegistraBitacora;
 /**
  * Class Pago
  *
@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Pago extends Model
 {
+    use RegistraBitacora;
     
     protected $perPage = 20;
 

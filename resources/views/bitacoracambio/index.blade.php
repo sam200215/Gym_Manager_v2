@@ -11,16 +11,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-
                             <span id="card_title">
-                                {{ __('Bitacoracambios') }}
+                                {{ __('Bitácora de Cambios') }}
                             </span>
-
-                             <div class="float-right">
-                                <a href="{{ route('bitacoracambios.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -35,31 +28,32 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-									<th >Usuario</th>
-									<th >Tabla</th>
-									<th >Accion</th>
-
-                                        <th></th>
+                                        <th>Usuario</th>
+                                        <th>Tabla</th>
+                                        <th>Acción</th>
+                                        <th>IP</th>
+                                        <th>Fecha</th>
+                                        <th>Detalles</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($bitacoracambios as $bitacoracambio)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-										<td >{{ $bitacoracambio->usuario }}</td>
-										<td >{{ $bitacoracambio->tabla }}</td>
-										<td >{{ $bitacoracambio->accion }}</td>
-
+                                            <td>{{ $bitacoracambio->usuario }}</td>
+                                            <td>{{ $bitacoracambio->tabla }}</td>
                                             <td>
-                                                <form action="{{ route('bitacoracambios.destroy', $bitacoracambio->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('bitacoracambios.show', $bitacoracambio->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Show') }}</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('bitacoracambios.edit', $bitacoracambio->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Edit') }}</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
-                                                </form>
+                                                <span class="badge bg-{{ $bitacoracambio->getBadgeClass() }}">
+                                                    {{ $bitacoracambio->accion }}
+                                                </span>
+                                            </td>
+                                            <td>{{ $bitacoracambio->ip }}</td>
+                                            <td>{{ $bitacoracambio->created_at->format('d/m/Y H:i:s') }}</td>
+                                            <td>
+                                                <a href="{{ route('bitacoracambios.show', $bitacoracambio->id) }}" 
+                                                   class="btn btn-sm btn-info">
+                                                    <i class="fa fa-eye"></i> Ver
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -68,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $bitacoracambios->withQueryString()->links() !!}
+                {!! $bitacoracambios->links() !!}
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\RegistraBitacora;
 /**
  * Class Rol
  *
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Rol extends Model
 {
-    
+    use RegistraBitacora;
     protected $perPage = 20;
     protected $table = 'rols';
     /**

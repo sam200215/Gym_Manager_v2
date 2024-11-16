@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\RegistraBitacora;
 /**
  * Class Permiso
  *
@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Permiso extends Model
 {
+    use RegistraBitacora;
     
     protected $perPage = 20;
 

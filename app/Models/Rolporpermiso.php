@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\RegistraBitacora;
 
 /**
  * Class Rolporpermiso
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Rolporpermiso extends Model
 {
+    use RegistraBitacora;
     
     protected $perPage = 20;
 

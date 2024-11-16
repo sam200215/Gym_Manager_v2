@@ -14,7 +14,17 @@
                         <span class="card-title">{{ __('Create') }} Rolporpermiso</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('rolporpermisos.store') }}"  role="form" enctype="multipart/form-data">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form method="POST" action="{{ route('rolporpermisos.store') }}" role="form" enctype="multipart/form-data">
                             @csrf
 
                             @include('rolporpermiso.form')

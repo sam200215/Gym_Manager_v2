@@ -1,19 +1,33 @@
-<div class="row padding-1 p-1">
-    <div class="col-md-12">
-        
-        <div class="form-group mb-2 mb20">
-            <label for="rol_id" class="form-label">{{ __('Rol Id') }}</label>
-            <input type="text" name="rol_id" class="form-control @error('rol_id') is-invalid @enderror" value="{{ old('rol_id', $rolporpermiso?->rol_id) }}" id="rol_id" placeholder="Rol Id">
-            {!! $errors->first('rol_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-        <div class="form-group mb-2 mb20">
-            <label for="permiso_id" class="form-label">{{ __('Permiso Id') }}</label>
-            <input type="text" name="permiso_id" class="form-control @error('permiso_id') is-invalid @enderror" value="{{ old('permiso_id', $rolporpermiso?->permiso_id) }}" id="permiso_id" placeholder="Permiso Id">
-            {!! $errors->first('permiso_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
+<!-- resources/views/rolporpermiso/form.blade.php -->
 
-    </div>
-    <div class="col-md-12 mt20 mt-2">
-        <button type="submit" class="btn btn-primary">{{ __('Guardar') }}</button>
-    </div>
+<div class="form-group">
+    <label for="rol_id">{{ __('Rol') }}</label>
+    <select name="rol_id" id="rol_id" class="form-control @error('rol_id') is-invalid @enderror">
+        @foreach($roles as $rol)
+            <option value="{{ $rol->id }}" {{ isset($rolporpermiso) && $rolporpermiso->rol_id == $rol->id ? 'selected' : '' }}>{{ $rol->nombre }}</option>
+        @endforeach
+    </select>
+    @error('rol_id')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+
+<div class="form-group">
+    <label for="permiso_id">{{ __('Permiso') }}</label>
+    <select name="permiso_id" id="permiso_id" class="form-control @error('permiso_id') is-invalid @enderror">
+        @foreach($permisos as $permiso)
+            <option value="{{ $permiso->id }}" {{ isset($rolporpermiso) && $rolporpermiso->permiso_id == $permiso->id ? 'selected' : '' }}>{{ $permiso->nombre }}</option>
+        @endforeach
+    </select>
+    @error('permiso_id')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+</div>
+
+<div class="form-group">
+    <button type="submit" class="btn btn-primary">{{ __('Guardar') }}</button>
 </div>

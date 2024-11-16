@@ -11,12 +11,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-
                             <span id="card_title">
-                                {{ __('Rolporpermisos') }}
+                                {{ __('Asignacion de permisos') }}
                             </span>
-
-                             <div class="float-right">
+                            <div class="float-right">
                                 <a href="{{ route('rolporpermisos.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Asignar nuevo permiso') }}
                                 </a>
@@ -35,10 +33,8 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-									<th >Rol Id</th>
-									<th >Permiso Id</th>
-
+                                        <th>Rol</th>
+                                        <th>Permiso</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -46,13 +42,11 @@
                                     @foreach ($rolporpermisos as $rolporpermiso)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-										<td >{{ $rolporpermiso->rol_id }}</td>
-										<td >{{ $rolporpermiso->permiso_id }}</td>
-
+                                            <td>{{ $rolporpermiso->rol->nombre }}</td>
+                                            <td>{{ $rolporpermiso->permiso->nombre }}</td>
                                             <td>
                                                 <form action="{{ route('rolporpermisos.destroy', $rolporpermiso->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('rolporpermisos.show', $rolporpermiso->id) }}"><i class="fa fa-fw fa-eye"></i> {{ __('Ver') }}</a>
+                                                    
                                                     <a class="btn btn-sm btn-success" href="{{ route('rolporpermisos.edit', $rolporpermiso->id) }}"><i class="fa fa-fw fa-edit"></i> {{ __('Editar') }}</a>
                                                     @csrf
                                                     @method('DELETE')

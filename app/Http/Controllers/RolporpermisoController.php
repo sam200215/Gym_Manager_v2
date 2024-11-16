@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RolporpermisoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Rol;
+use App\Models\Permiso;
 
 class RolporpermisoController extends Controller
 {
@@ -16,7 +18,8 @@ class RolporpermisoController extends Controller
      */
     public function index(Request $request): View
     {
-        $rolporpermisos = Rolporpermiso::paginate();
+        // Cargar los nombres de roles y permisos
+        $rolporpermisos = Rolporpermiso::with('rol', 'permiso')->paginate();
 
         return view('rolporpermiso.index', compact('rolporpermisos'))
             ->with('i', ($request->input('page', 1) - 1) * $rolporpermisos->perPage());
@@ -27,20 +30,35 @@ class RolporpermisoController extends Controller
      */
     public function create(): View
     {
-        $rolporpermiso = new Rolporpermiso();
+        $roles = Rol::all();
+        $permisos = Permiso::all();
 
-        return view('rolporpermiso.create', compact('rolporpermiso'));
+        return view('rolporpermiso.create', compact('roles', 'permisos'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RolporpermisoRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        Rolporpermiso::create($request->validated());
+        $request->validate([
+            'rol_id' => 'required|exists:rols,id',
+            'permiso_id' => 'required|exists:permisos,id',
+        ]);
 
-        return Redirect::route('rolporpermisos.index')
-            ->with('success', 'Rolporpermiso created successfully.');
+        // Verificar si el permiso ya está asignado al rol
+        $exists = Rolporpermiso::where('rol_id', $request->rol_id)
+            ->where('permiso_id', $request->permiso_id)
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['permiso_id' => 'El permiso ya está asignado a este rol.']);
+        }
+
+        Rolporpermiso::create($request->all());
+
+        return redirect()->route('rolporpermisos.index')
+            ->with('success', 'Permiso asignado al rol correctamente.');
     }
 
     /**
@@ -58,9 +76,11 @@ class RolporpermisoController extends Controller
      */
     public function edit($id): View
     {
-        $rolporpermiso = Rolporpermiso::find($id);
+        $rolporpermiso = Rolporpermiso::findOrFail($id);
+        $roles = Rol::all();
+        $permisos = Permiso::all();
 
-        return view('rolporpermiso.edit', compact('rolporpermiso'));
+        return view('rolporpermiso.edit', compact('rolporpermiso', 'roles', 'permisos'));
     }
 
     /**

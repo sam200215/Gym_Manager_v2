@@ -29,7 +29,7 @@ class RolesAndPermisosSeeder extends Seeder
         ];
 
         foreach ($roles as $rol) {
-            Rol::create($rol);
+            Rol::firstOrCreate(['nombre' => $rol['nombre']], $rol);
         }
 
         // Crear permisos
@@ -56,7 +56,7 @@ class RolesAndPermisosSeeder extends Seeder
         ];
 
         foreach ($permisos as $permiso) {
-            Permiso::create($permiso);
+            Permiso::firstOrCreate(['nombre' => $permiso['nombre']], $permiso);
         }
 
         // Asignar permisos a roles
@@ -66,17 +66,17 @@ class RolesAndPermisosSeeder extends Seeder
 
         // Administrador tiene todos los permisos
         foreach (Permiso::all() as $permiso) {
-            Rolporpermiso::create([
+            Rolporpermiso::firstOrCreate([
                 'rol_id' => $rolAdmin->id,
                 'permiso_id' => $permiso->id
             ]);
         }
 
         // Gerente tiene permisos específicos
-        $permisosGerente = ['gestionar-clientes', 'ver-clientes', 'gestionar-empleados', 'gestionar-membresias', 'gestionar-pagos'];
+        $permisosGerente = ['gestionar-clientes', 'ver-clientes', 'gestionar-empleados', 'gestionar-membresias', 'gestionar-pagos', 'ver-pagos'];
         foreach ($permisosGerente as $nombrePermiso) {
             $permiso = Permiso::where('nombre', $nombrePermiso)->first();
-            Rolporpermiso::create([
+            Rolporpermiso::firstOrCreate([
                 'rol_id' => $rolGerente->id,
                 'permiso_id' => $permiso->id
             ]);
@@ -86,7 +86,7 @@ class RolesAndPermisosSeeder extends Seeder
         $permisosEmpleado = ['ver-clientes', 'ver-pagos'];
         foreach ($permisosEmpleado as $nombrePermiso) {
             $permiso = Permiso::where('nombre', $nombrePermiso)->first();
-            Rolporpermiso::create([
+            Rolporpermiso::firstOrCreate([
                 'rol_id' => $rolEmpleado->id,
                 'permiso_id' => $permiso->id
             ]);

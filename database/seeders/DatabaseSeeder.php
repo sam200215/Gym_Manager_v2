@@ -43,5 +43,10 @@ class DatabaseSeeder extends Seeder
                 'rol_id' => 3, // Asignar rol de empleado
             ]
         );
+
+        // Llamar a otros seeders
+        $this->call([
+            RolesAndPermisosSeeder::class,
+        ]);
     }
 }

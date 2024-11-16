@@ -13,11 +13,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Crear usuario Administrador
+        User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin User',
+                'password' => bcrypt('password'),
+                'rol_id' => 1, // Asignar rol de administrador
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Crear usuario Gerente
+        User::firstOrCreate(
+            ['email' => 'gerente@example.com'],
+            [
+                'name' => 'Gerente User',
+                'password' => bcrypt('password'),
+                'rol_id' => 2, // Asignar rol de gerente
+            ]
+        );
+
+        // Crear usuario Empleado
+        User::firstOrCreate(
+            ['email' => 'empleado@example.com'],
+            [
+                'name' => 'Empleado User',
+                'password' => bcrypt('password'),
+                'rol_id' => 3, // Asignar rol de empleado
+            ]
+        );
     }
 }

@@ -17,7 +17,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['check.permiso:gestionar-roles'])->group(function () {
         Route::resource('rols', App\Http\Controllers\RolController::class);
         Route::resource('permisos', App\Http\Controllers\PermisoController::class);
-        Route::resource('rolporpermisos', App\Http\Controllers\RolPorPermisoController::class);
+        Route::resource('rolporpermisos', App\Http\Controllers\RolporPermisoController::class);
     });
 
     // Rutas de gestión de clientes

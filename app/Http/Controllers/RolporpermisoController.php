@@ -19,10 +19,15 @@ class RolporpermisoController extends Controller
     public function index(Request $request): View
     {
         // Cargar los nombres de roles y permisos
-        $rolporpermisos = Rolporpermiso::with('rol', 'permiso')->paginate();
-
-        return view('rolporpermiso.index', compact('rolporpermisos'))
-            ->with('i', ($request->input('page', 1) - 1) * $rolporpermisos->perPage());
+        try {
+            $rolporpermisos = Rolporpermiso::with(['rol', 'permiso'])->paginate();
+            
+            return view('rolporpermiso.index', compact('rolporpermisos'))
+                ->with('i', ($request->input('page', 1) - 1) * $rolporpermisos->perPage());
+        } catch (\Exception $e) {
+            \Log::error('Error en rolporpermisos.index: ' . $e->getMessage());
+            return view('rolporpermiso.index')->withErrors(['error' => 'Error al cargar los datos']);
+        }
     }
 
     /**

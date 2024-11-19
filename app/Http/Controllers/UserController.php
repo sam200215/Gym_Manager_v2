@@ -25,7 +25,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Rol::all();
+        return view('user.create', compact('roles'));
     }
 
     /**
@@ -33,7 +34,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'rol_id' => 'required|exists:rols,id'
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'rol_id' => $request->rol_id
+        ]);
+
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario creado exitosamente.');
     }
 
     /**
@@ -47,24 +63,42 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $roles = Rol::all();
+        return view('user.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'rol_id' => 'required|exists:rols,id',
+            'password' => 'nullable|string|min:8|confirmed'
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'rol_id' => $request->rol_id,
+            'password' => $request->password ? Hash::make($request->password) : $user->password
+        ]);
+
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario actualizado exitosamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario eliminado exitosamente.');
     }
 }

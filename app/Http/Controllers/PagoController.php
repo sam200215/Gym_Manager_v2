@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pago;
+use App\Models\Pagodetall;
+use App\Models\Cliente;
+use App\Models\Membresia;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\PagoRequest;
@@ -16,7 +20,9 @@ class PagoController extends Controller
      */
     public function index(Request $request): View
     {
-        $pagos = Pago::paginate();
+        $pagos = Pago::with(['cliente', 'detalles.membresia'])
+            ->orderBy('fecha_pago', 'desc')
+            ->paginate();
 
         return view('pago.index', compact('pagos'))
             ->with('i', ($request->input('page', 1) - 1) * $pagos->perPage());
@@ -27,29 +33,59 @@ class PagoController extends Controller
      */
     public function create(): View
     {
-        $pago = new Pago();
+        $clientes = Cliente::all();
+        $membresias = Membresia::all();
 
-        return view('pago.create', compact('pago'));
+        return view('pago.create', compact('clientes', 'membresias'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PagoRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        Pago::create($request->validated());
+        $request->validate([
+            'cliente_id' => 'required|exists:clientes,id',
+            'membresia_id' => 'required|exists:membresias,id',
+            'cantidad' => 'required|integer|min:1',
+            'subtotal' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0'
+        ]);
 
-        return Redirect::route('pagos.index')
-            ->with('success', 'Pago created successfully.');
+        try {
+            DB::beginTransaction();
+
+            // Crear el pago
+            $pago = Pago::create([
+                'cliente_id' => $request->cliente_id,
+                'fecha_pago' => now(),
+                'total' => $request->total
+            ]);
+
+            // Crear el detalle
+            $pago->detalles()->create([
+                'membresia_id' => $request->membresia_id,
+                'cantidad' => $request->cantidad,
+                'subtotal' => $request->subtotal
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('pagos.index')
+                ->with('success', 'Pago creado exitosamente.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Error al crear el pago: ' . $e->getMessage()]);
+        }
     }
-
     /**
      * Display the specified resource.
      */
     public function show($id): View
     {
-        $pago = Pago::find($id);
-
+        $pago = Pago::with(['cliente', 'detalles.membresia'])->findOrFail($id);
         return view('pago.show', compact('pago'));
     }
 

@@ -29,7 +29,7 @@ class Bitacoracambio extends Model
     /**
      * Número de elementos por página para la paginación
      */
-    protected $perPage = 20;
+    protected $perPage = 10;
 
     /**
      * Los atributos que son asignables en masa.

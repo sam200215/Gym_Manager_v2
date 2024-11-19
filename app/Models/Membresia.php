@@ -32,6 +32,10 @@ class Membresia extends Model
      */
     protected $fillable = ['tipo', 'descripcion', 'costo', 'duracion'];
 
+    protected $casts = [
+        'costo' => 'decimal:2',
+    ];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

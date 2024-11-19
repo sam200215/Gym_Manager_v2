@@ -31,8 +31,20 @@ class Pagodetall extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['pago_id', 'membresia_id', 'cantidad', 'subtotal'];
+    protected $fillable = [
+        'pago_id',
+        'membresia_id',
+        'cantidad',
+        'subtotal'
+    ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pago()
+    {
+        return $this->belongsTo(\App\Models\Pago::class, 'pago_id', 'id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -41,13 +53,4 @@ class Pagodetall extends Model
     {
         return $this->belongsTo(\App\Models\Membresia::class, 'membresia_id', 'id');
     }
-    
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function pago()
-    {
-        return $this->belongsTo(\App\Models\Pago::class, 'pago_id', 'id');
-    }
-    
 }

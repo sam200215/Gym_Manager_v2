@@ -34,7 +34,6 @@ class Cliente extends Model
      */
     protected $fillable = ['usuario_id', 'nombre_completo', 'dni', 'telefono', 'direccion'];
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

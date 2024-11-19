@@ -1,24 +1,58 @@
-<div class="row padding-1 p-1">
-    <div class="col-md-12">
-        
-        <div class="form-group mb-2 mb20">
-            <label for="cliente_id" class="form-label">{{ __('Cliente Id') }}</label>
-            <input type="text" name="cliente_id" class="form-control @error('cliente_id') is-invalid @enderror" value="{{ old('cliente_id', $pago?->cliente_id) }}" id="cliente_id" placeholder="Cliente Id">
-            {!! $errors->first('cliente_id', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-        <div class="form-group mb-2 mb20">
-            <label for="fecha_pago" class="form-label">{{ __('Fecha Pago') }}</label>
-            <input type="text" name="fecha_pago" class="form-control @error('fecha_pago') is-invalid @enderror" value="{{ old('fecha_pago', $pago?->fecha_pago) }}" id="fecha_pago" placeholder="Fecha Pago">
-            {!! $errors->first('fecha_pago', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
-        </div>
-        <div class="form-group mb-2 mb20">
-            <label for="total" class="form-label">{{ __('Total') }}</label>
-            <input type="text" name="total" class="form-control @error('total') is-invalid @enderror" value="{{ old('total', $pago?->total) }}" id="total" placeholder="Total">
-            {!! $errors->first('total', '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>') !!}
+<div class="box box-info padding-1">
+    <div class="box-body">
+        <!-- Datos del Pago -->
+        <div class="form-group mb-3">
+            <label for="cliente_id">Cliente</label>
+            <select name="cliente_id" class="form-control">
+                @foreach($clientes as $cliente)
+                    <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                @endforeach
+            </select>
         </div>
 
+        <!-- Datos del Detalle -->
+        <div class="form-group mb-3">
+            <label for="membresia_id">Membresía</label>
+            <select name="membresia_id" class="form-control" id="membresia_id" onchange="calcularSubtotal()">
+                @foreach($membresias as $membresia)
+                    <option value="{{ $membresia->id }}" data-precio="{{ $membresia->precio }}">
+                        {{ $membresia->nombre }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="cantidad">Cantidad</label>
+            <input type="number" name="cantidad" class="form-control" id="cantidad" value="1" min="1" onchange="calcularSubtotal()">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="subtotal">Subtotal</label>
+            <input type="number" name="subtotal" class="form-control" id="subtotal" readonly>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="total">Total</label>
+            <input type="number" name="total" class="form-control" id="total" readonly>
+        </div>
     </div>
-    <div class="col-md-12 mt20 mt-2">
-        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+    
+    <div class="box-footer mt-3">
+        <button type="submit" class="btn btn-primary">{{ __('Guardar') }}</button>
     </div>
 </div>
+
+<script>
+function calcularSubtotal() {
+    const membresia = document.getElementById('membresia_id');
+    const cantidad = document.getElementById('cantidad').value;
+    const precio = membresia.options[membresia.selectedIndex].dataset.precio;
+    
+    const subtotal = precio * cantidad;
+    document.getElementById('subtotal').value = subtotal;
+    document.getElementById('total').value = subtotal;
+}
+
+document.addEventListener('DOMContentLoaded', calcularSubtotal);
+</script>

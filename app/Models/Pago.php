@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\RegistraBitacora;
+use Carbon\Carbon;
+
 /**
  * Class Pago
  *
@@ -22,16 +24,12 @@ use App\Traits\RegistraBitacora;
 class Pago extends Model
 {
     use RegistraBitacora;
-    
-    protected $perPage = 20;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $perPage = 10;
+
+    // Eager loading de relaciones (relaciones que se cargarán automáticamente)
+    protected $with = ['cliente', 'detalles.membresia'];
     protected $fillable = ['cliente_id', 'fecha_pago', 'total'];
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -40,13 +38,29 @@ class Pago extends Model
     {
         return $this->belongsTo(\App\Models\Cliente::class, 'cliente_id', 'id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function pagodetalls()
+    public function detalles()
     {
-        return $this->hasMany(\App\Models\Pagodetall::class, 'id', 'pago_id');
+        return $this->hasMany(\App\Models\Pagodetall::class, 'pago_id', 'id');
     }
-    
+
+    public function getDiasRestantesAttribute()
+    {
+        $detalle = $this->detalles->first();
+        if (!$detalle) return 0;
+
+        $duracion = $detalle->membresia->duracion;
+        $fechaLimite = Carbon::parse($this->fecha_pago)->addDays($duracion);
+        $diasRestantes = Carbon::now()->diffInDays($fechaLimite, false);
+
+        // Si la fecha de pago es hoy, devolver la duración completa
+        if (Carbon::parse($this->fecha_pago)->isToday()) {
+            return $duracion;
+        }
+
+        return (int)$diasRestantes;
+    }
 }

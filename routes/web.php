@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 // Rutas públicas
 Route::get('/', function () {
@@ -18,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('rols', App\Http\Controllers\RolController::class);
         Route::resource('permisos', App\Http\Controllers\PermisoController::class);
         Route::resource('rolporpermisos', App\Http\Controllers\RolporpermisoController::class);
+        Route::resource('users', UserController::class);
     });
 
     // Rutas de gestión de clientes

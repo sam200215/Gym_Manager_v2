@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
+use App\Models\Rolporpermiso;
+use Illuminate\Http\RedirectResponse;
+
+
+
 class UserController extends Controller
 {
     /**

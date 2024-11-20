@@ -92,11 +92,13 @@ class PagoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
+    public function edit($id)
     {
-        $pago = Pago::find($id);
+        $pago = Pago::with(['cliente', 'detalles.membresia'])->findOrFail($id);
+        $clientes = Cliente::all();
+        $membresias = Membresia::all();
 
-        return view('pago.edit', compact('pago'));
+        return view('pago.edit', compact('pago', 'clientes', 'membresias'));
     }
 
     /**

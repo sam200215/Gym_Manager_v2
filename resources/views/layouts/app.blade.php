@@ -92,8 +92,10 @@
                             </a>
                             <ul class="dropdown-menu">
                                 @if(auth()->user()->hasPermiso('gestionar-pagos'))
+                                <li><a class="dropdown-item" href="{{ route('pagos.create') }}">
+                                        <i class="fas fa-plus"></i> Nuevo Pago</a></li>
                                 <li><a class="dropdown-item" href="{{ route('pagos.index') }}">
-                                        <i class="fas fa-cash-register"></i> Gestionar Pagos</a></li>
+                                        <i class="fas fa-cash-register"></i> Administrar Pagos</a></li>
                                 @endif
                                 @if(auth()->user()->hasPermiso('ver-pagos'))
                                 <li><a class="dropdown-item" href="{{ route('pagos.index') }}">

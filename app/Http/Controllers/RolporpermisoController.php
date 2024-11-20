@@ -10,23 +10,21 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Rol;
 use App\Models\Permiso;
+use Illuminate\Support\Facades\Log;
 
 class RolporpermisoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request): View
     {
-        // Cargar los nombres de roles y permisos
         try {
             $rolporpermisos = Rolporpermiso::with(['rol', 'permiso'])->paginate();
-            
+
             return view('rolporpermiso.index', compact('rolporpermisos'))
                 ->with('i', ($request->input('page', 1) - 1) * $rolporpermisos->perPage());
         } catch (\Exception $e) {
-            \Log::error('Error en rolporpermisos.index: ' . $e->getMessage());
-            return view('rolporpermiso.index')->withErrors(['error' => 'Error al cargar los datos']);
+            Log::error('Error en rolporpermisos.index: ' . $e->getMessage());
+            return redirect()->route('rolporpermiso.index')
+                ->with('error', 'Error al cargar los datos');
         }
     }
 

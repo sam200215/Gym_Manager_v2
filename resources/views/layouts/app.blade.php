@@ -35,85 +35,94 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        @auth
-                        @if(auth()->user()->hasPermiso('gestionar-roles'))
-                        <!-- Menú de Administración -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-cog"></i> Administración
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('rols.index') }}">
-                                        <i class="fas fa-user-tag"></i> Roles</a></li>
-                                <li><a class="dropdown-item" href="{{ route('permisos.index') }}">
-                                        <i class="fas fa-key"></i> Permisos</a></li>
-                                <li><a class="dropdown-item" href="{{ route('rolporpermisos.index') }}">
-                                        <i class="fas fa-users-cog"></i> Roles y Permisos</a></li>
-                                <li><a class="dropdown-item" href="{{ route('users.index') }}">
-                                        <i class="fas fa-users"></i> Usuarios</a></li>
-                            </ul>
-                        </li>
-                        @endif
+    @auth
+        @if(auth()->user()->hasPermiso('gestionar-roles'))
+        <!-- Menú de Administración -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="fas fa-cog"></i> Administración
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ route('rols.index') }}">
+                        <i class="fas fa-user-tag"></i> Roles</a></li>
+                <li><a class="dropdown-item" href="{{ route('permisos.index') }}">
+                        <i class="fas fa-key"></i> Permisos</a></li>
+                <li><a class="dropdown-item" href="{{ route('rolporpermisos.index') }}">
+                        <i class="fas fa-users-cog"></i> Roles y Permisos</a></li>
+                <li><a class="dropdown-item" href="{{ route('users.index') }}">
+                        <i class="fas fa-users"></i> Usuarios</a></li>
+            </ul>
+        </li>
+        @endif
 
-                        <!-- Menú de Clientes -->
-                        @if(auth()->user()->hasPermiso('gestionar-clientes') || auth()->user()->hasPermiso('ver-clientes'))
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-users"></i> Clientes
-                            </a>
-                            <ul class="dropdown-menu">
-                                @if(auth()->user()->hasPermiso('gestionar-clientes'))
-                                <li><a class="dropdown-item" href="{{ route('clientes.index') }}">
-                                        <i class="fas fa-user"></i> Gestionar Clientes</a></li>
-                                <li><a class="dropdown-item" href="{{ route('membresias.index') }}">
-                                        <i class="fas fa-id-card"></i> Membresías</a></li>
-                                @endif
-                                @if(auth()->user()->hasPermiso('ver-clientes'))
-                                <li><a class="dropdown-item" href="{{ route('clientes.index') }}">
-                                        <i class="fas fa-list"></i> Ver Clientes</a></li>
-                                @endif
-                            </ul>
-                        </li>
-                        @endif
+        <!-- Menú de Clientes -->
+        @if(auth()->user()->hasPermiso('ver-clientes'))
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="fas fa-users"></i> Clientes
+            </a>
+            <ul class="dropdown-menu">
+                @if(auth()->user()->hasPermiso('crear-clientes'))
+                    <li><a class="dropdown-item" href="{{ route('clientes.create') }}">
+                        <i class="fas fa-user-plus"></i> Nuevo Cliente</a></li>
+                @endif
+                <li><a class="dropdown-item" href="{{ route('clientes.index') }}">
+                    <i class="fas fa-list"></i> Ver Clientes</a></li>
+            </ul>
+        </li>
+        @endif
 
-                        <!-- Menú de Empleados -->
-                        @if(auth()->user()->hasPermiso('gestionar-empleados'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('empleados.index') }}">
-                                <i class="fas fa-user-tie"></i> Empleados</a>
-                        </li>
-                        @endif
+        <!-- Menú de Membresías -->
+        @if(auth()->user()->hasPermiso('ver-membresias'))
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="fas fa-id-card"></i> Membresías
+            </a>
+            <ul class="dropdown-menu">
+                @if(auth()->user()->hasPermiso('crear-membresias'))
+                    <li><a class="dropdown-item" href="{{ route('membresias.create') }}">
+                        <i class="fas fa-plus"></i> Nueva Membresía</a></li>
+                @endif
+                <li><a class="dropdown-item" href="{{ route('membresias.index') }}">
+                    <i class="fas fa-list"></i> Ver Membresías</a></li>
+            </ul>
+        </li>
+        @endif
 
-                        <!-- Menú de Pagos -->
-                        @if(auth()->user()->hasPermiso('gestionar-pagos') || auth()->user()->hasPermiso('ver-pagos'))
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-money-bill"></i> Pagos
-                            </a>
-                            <ul class="dropdown-menu">
-                                @if(auth()->user()->hasPermiso('gestionar-pagos'))
-                                <li><a class="dropdown-item" href="{{ route('pagos.create') }}">
-                                        <i class="fas fa-plus"></i> Nuevo Pago</a></li>
-                                <li><a class="dropdown-item" href="{{ route('pagos.index') }}">
-                                        <i class="fas fa-cash-register"></i> Administrar Pagos</a></li>
-                                @endif
-                                @if(auth()->user()->hasPermiso('ver-pagos'))
-                                <li><a class="dropdown-item" href="{{ route('pagos.index') }}">
-                                        <i class="fas fa-list"></i> Ver Pagos</a></li>
-                                @endif
-                            </ul>
-                        </li>
-                        @endif
+        <!-- Menú de Pagos -->
+        @if(auth()->user()->hasPermiso('ver-pagos'))
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="fas fa-money-bill"></i> Pagos
+            </a>
+            <ul class="dropdown-menu">
+                @if(auth()->user()->hasPermiso('crear-pagos'))
+                    <li><a class="dropdown-item" href="{{ route('pagos.create') }}">
+                        <i class="fas fa-plus"></i> Nuevo Pago</a></li>
+                @endif
+                <li><a class="dropdown-item" href="{{ route('pagos.index') }}">
+                    <i class="fas fa-list"></i> Ver Pagos</a></li>
+            </ul>
+        </li>
+        @endif
 
-                        <!-- Bitácora -->
-                        @if(auth()->user()->hasPermiso('ver-bitacora'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('bitacoracambios.index') }}">
-                                <i class="fas fa-history"></i> Bitácora</a>
-                        </li>
-                        @endif
-                        @endauth
-                    </ul>
+        <!-- Menú de Empleados -->
+        @if(auth()->user()->hasPermiso('ver-empleados'))
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('empleados.index') }}">
+                <i class="fas fa-user-tie"></i> Empleados</a>
+        </li>
+        @endif
+
+        <!-- Bitácora -->
+        @if(auth()->user()->hasPermiso('ver-bitacora'))
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('bitacoracambios.index') }}">
+                <i class="fas fa-history"></i> Bitácora</a>
+        </li>
+        @endif
+    @endauth
+</ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">

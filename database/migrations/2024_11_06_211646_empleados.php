@@ -14,23 +14,30 @@ return new class extends Migration
         Schema::create('empleados', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('usuario_id')->nullable();
-            $table->string('nombre_completo', 50);
-            $table->string('cargo', 50)->nullable();
-            $table->decimal('salario', 10, 2)->nullable();
-    
-
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
-    
+            $table->string('nombre_completo', 100);
+            $table->string('dni', 15)->unique();
+            $table->string('telefono', 15);
+            $table->string('direccion', 255)->nullable();
+            $table->string('email', 100)->unique()->nullable();
+            $table->string('cargo', 50);
+            $table->decimal('salario', 10, 2);
+            $table->date('fecha_contratacion');
+            $table->string('horario_trabajo', 100)->nullable();
+            $table->enum('tipo_contrato', ['Tiempo Completo', 'Medio Tiempo', 'Por Horas']);
+            $table->string('numero_seguro_social', 20)->nullable();
+            $table->string('contacto_emergencia', 100)->nullable();
+            $table->string('telefono_emergencia', 15)->nullable();
+            $table->boolean('activo')->default(true);
             $table->timestamps();
+            $table->softDeletes(); // Para eliminación suave
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        //
+        Schema::dropIfExists('empleados');
     }
 };

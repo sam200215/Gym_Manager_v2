@@ -59,21 +59,18 @@ class User extends Authenticatable
     /**
      * Verifica si el usuario tiene un permiso específico
      */
-    public function hasPermiso($permisoNombre)
+    public function hasPermiso($permisoNombre): bool
     {
-        // Verificar si el usuario tiene rol asignado
         if (!$this->rol) {
             return false;
         }
 
-        // Si es administrador, dar acceso total
-        if ($this->rol->nombre === 'Administrador') {
+        if ($this->rol && $this->rol->nombre === 'Administrador') {
             return true;
         }
 
-        // Verificar el permiso específico
         return $this->rol->rolporpermisos()
-            ->whereHas('permiso', function($query) use ($permisoNombre) {
+            ->whereHas('permiso', function ($query) use ($permisoNombre) {
                 $query->where('nombre', $permisoNombre);
             })->exists();
     }

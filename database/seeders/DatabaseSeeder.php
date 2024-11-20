@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
-                'password' => bcrypt('password'),
+                'password' => bcrypt('3Xho7Tn!cn'),
                 'rol_id' => 1,
             ]
         );
@@ -30,17 +30,26 @@ class DatabaseSeeder extends Seeder
             ['email' => 'gerente@example.com'],
             [
                 'name' => 'Gerente User',
-                'password' => bcrypt('password'),
+                'password' => bcrypt('3Xho7Tn!cn'),
                 'rol_id' => 2,
             ]
         );
 
         User::firstOrCreate(
-            ['email' => 'empleado@example.com'],
+            ['email' => 'recepcion@example.com'],
             [
-                'name' => 'Empleado User',
-                'password' => bcrypt('password'),
+                'name' => 'Recepcionista User',
+                'password' => bcrypt('3Xho7Tn!cn'),
                 'rol_id' => 3,
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'entrenador@example.com'],
+            [
+                'name' => 'Entrenador User',
+                'password' => bcrypt('3Xho7Tn!cn'),
+                'rol_id' => 2,
             ]
         );
     }

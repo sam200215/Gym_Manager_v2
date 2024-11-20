@@ -3,51 +3,69 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\RegistraBitacora;
+
 /**
  * Class Cliente
  *
  * @property $id
- * @property $usuario_id
  * @property $nombre_completo
  * @property $dni
  * @property $telefono
  * @property $direccion
+ * @property $email
+ * @property $fecha_nacimiento
+ * @property $genero
+ * @property $contacto_emergencia
+ * @property $telefono_emergencia
+ * @property $condiciones_medicas
+ * @property $fecha_registro
+ * @property $activo
  * @property $created_at
  * @property $updated_at
+ * @property $deleted_at
  *
- * @property User $user
  * @property Pago[] $pagos
- * @package App
- * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Cliente extends Model
 {
-    use RegistraBitacora;
+    use SoftDeletes, RegistraBitacora;
     
-    protected $perPage = 20;
+    protected $perPage = 10;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = ['usuario_id', 'nombre_completo', 'dni', 'telefono', 'direccion'];
+    protected $fillable = [
+        'nombre_completo',
+        'dni',
+        'telefono',
+        'direccion',
+        'email',
+        'fecha_nacimiento',
+        'genero',
+        'contacto_emergencia',
+        'telefono_emergencia',
+        'condiciones_medicas',
+        'fecha_registro',
+        'activo'
+    ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(\App\Models\User::class, 'usuario_id', 'id');
-    }
-    
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
+    protected $dates = [
+        'fecha_nacimiento',
+        'fecha_registro',
+        'deleted_at',
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $casts = [
+        'activo' => 'boolean',
+        'fecha_nacimiento' => 'datetime',
+        'fecha_registro' => 'datetime'
+    ];
+
+    // Relación con pagos
     public function pagos()
     {
-        return $this->hasMany(\App\Models\Pago::class, 'id', 'cliente_id');
+        return $this->hasMany(Pago::class);
     }
-    
 }

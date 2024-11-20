@@ -11,13 +11,9 @@ use Illuminate\View\View;
 
 class ClienteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request): View
     {
         $clientes = Cliente::paginate();
-
         return view('cliente.index', compact('clientes'))
             ->with('i', ($request->input('page', 1) - 1) * $clientes->perPage());
     }
@@ -28,19 +24,32 @@ class ClienteController extends Controller
     public function create(): View
     {
         $cliente = new Cliente();
-
         return view('cliente.create', compact('cliente'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ClienteRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        Cliente::create($request->validated());
+        $request->validate([
+            'nombre_completo' => 'required|string|max:100',
+            'dni' => 'required|string|max:15|unique:clientes',
+            'telefono' => 'required|string|max:15',
+            'direccion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:100|unique:clientes',
+            'fecha_nacimiento' => 'required|date',
+            'genero' => 'required|in:M,F',
+            'contacto_emergencia' => 'nullable|string|max:100',
+            'telefono_emergencia' => 'nullable|string|max:15',
+            'condiciones_medicas' => 'nullable|string'
+        ]);
 
-        return Redirect::route('clientes.index')
-            ->with('success', 'Cliente created successfully.');
+        $request->merge(['fecha_registro' => now()]);
+        Cliente::create($request->all());
+
+        return redirect()->route('clientes.index')
+            ->with('success', 'Cliente creado exitosamente.');
     }
 
     /**
@@ -48,8 +57,7 @@ class ClienteController extends Controller
      */
     public function show($id): View
     {
-        $cliente = Cliente::find($id);
-
+        $cliente = Cliente::findOrFail($id);
         return view('cliente.show', compact('cliente'));
     }
 
@@ -58,27 +66,42 @@ class ClienteController extends Controller
      */
     public function edit($id): View
     {
-        $cliente = Cliente::find($id);
-
+        $cliente = Cliente::findOrFail($id);
         return view('cliente.edit', compact('cliente'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ClienteRequest $request, Cliente $cliente): RedirectResponse
+    public function update(Request $request, $id): RedirectResponse
     {
-        $cliente->update($request->validated());
+        $request->validate([
+            'nombre_completo' => 'required|string|max:100',
+            'dni' => 'required|string|max:15|unique:clientes,dni,'.$id,
+            'telefono' => 'required|string|max:15',
+            'direccion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:100|unique:clientes,email,'.$id,
+            'fecha_nacimiento' => 'required|date',
+            'genero' => 'required|in:M,F',
+            'contacto_emergencia' => 'nullable|string|max:100',
+            'telefono_emergencia' => 'nullable|string|max:15',
+            'condiciones_medicas' => 'nullable|string'
+        ]);
 
-        return Redirect::route('clientes.index')
-            ->with('success', 'Cliente updated successfully');
+        $cliente = Cliente::findOrFail($id);
+        $cliente->update($request->all());
+
+        return redirect()->route('clientes.index')
+            ->with('success', 'Cliente actualizado exitosamente.');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id): RedirectResponse
     {
-        Cliente::find($id)->delete();
-
-        return Redirect::route('clientes.index')
-            ->with('success', 'Cliente deleted successfully');
+        Cliente::findOrFail($id)->delete();
+        return redirect()->route('clientes.index')
+            ->with('success', 'Cliente eliminado exitosamente.');
     }
 }

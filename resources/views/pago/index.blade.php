@@ -63,9 +63,13 @@ Pagos
                                     </td>
                                     <td>
                                         <form action="{{ route('pagos.destroy', $pago->id) }}" method="POST">
+                                            <!-- Botón Ver siempre visible para usuarios con ver-pagos -->
                                             <a class="btn btn-sm btn-primary" href="{{ route('pagos.show', $pago->id) }}">
                                                 <i class="fa fa-eye"></i>
                                             </a>
+
+                                            <!-- Botones Editar y Eliminar solo para usuarios con gestionar-pagos -->
+                                            @if(auth()->user()->hasPermiso('gestionar-pagos'))
                                             <a class="btn btn-sm btn-success" href="{{ route('pagos.edit', $pago->id) }}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
@@ -75,6 +79,7 @@ Pagos
                                                 onclick="return confirm('¿Está seguro de eliminar este pago?')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
+                                            @endif
                                         </form>
                                     </td>
                                 </tr>

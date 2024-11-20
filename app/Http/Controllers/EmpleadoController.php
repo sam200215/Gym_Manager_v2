@@ -11,74 +11,84 @@ use Illuminate\View\View;
 
 class EmpleadoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request): View
     {
         $empleados = Empleado::paginate();
-
         return view('empleado.index', compact('empleados'))
             ->with('i', ($request->input('page', 1) - 1) * $empleados->perPage());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): View
     {
         $empleado = new Empleado();
-
         return view('empleado.create', compact('empleado'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(EmpleadoRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        Empleado::create($request->validated());
+        $request->validate([
+            'nombre_completo' => 'required|string|max:100',
+            'dni' => 'required|string|max:15|unique:empleados',
+            'telefono' => 'required|string|max:15',
+            'direccion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:100|unique:empleados',
+            'cargo' => 'required|string|max:50',
+            'salario' => 'required|numeric|min:0',
+            'fecha_contratacion' => 'required|date',
+            'horario_trabajo' => 'nullable|string|max:100',
+            'tipo_contrato' => 'required|in:Tiempo Completo,Medio Tiempo,Por Horas',
+            'numero_seguro_social' => 'nullable|string|max:20',
+            'contacto_emergencia' => 'nullable|string|max:100',
+            'telefono_emergencia' => 'nullable|string|max:15'
+        ]);
 
-        return Redirect::route('empleados.index')
-            ->with('success', 'Empleado created successfully.');
+        Empleado::create($request->all());
+
+        return redirect()->route('empleados.index')
+            ->with('success', 'Empleado creado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id): View
     {
-        $empleado = Empleado::find($id);
-
+        $empleado = Empleado::findOrFail($id);
         return view('empleado.show', compact('empleado'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id): View
     {
-        $empleado = Empleado::find($id);
-
+        $empleado = Empleado::findOrFail($id);
         return view('empleado.edit', compact('empleado'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(EmpleadoRequest $request, Empleado $empleado): RedirectResponse
+    public function update(Request $request, $id): RedirectResponse
     {
-        $empleado->update($request->validated());
+        $request->validate([
+            'nombre_completo' => 'required|string|max:100',
+            'dni' => 'required|string|max:15|unique:empleados,dni,'.$id,
+            'telefono' => 'required|string|max:15',
+            'direccion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:100|unique:empleados,email,'.$id,
+            'cargo' => 'required|string|max:50',
+            'salario' => 'required|numeric|min:0',
+            'fecha_contratacion' => 'required|date',
+            'horario_trabajo' => 'nullable|string|max:100',
+            'tipo_contrato' => 'required|in:Tiempo Completo,Medio Tiempo,Por Horas',
+            'numero_seguro_social' => 'nullable|string|max:20',
+            'contacto_emergencia' => 'nullable|string|max:100',
+            'telefono_emergencia' => 'nullable|string|max:15'
+        ]);
 
-        return Redirect::route('empleados.index')
-            ->with('success', 'Empleado updated successfully');
+        $empleado = Empleado::findOrFail($id);
+        $empleado->update($request->all());
+
+        return redirect()->route('empleados.index')
+            ->with('success', 'Empleado actualizado exitosamente.');
     }
 
     public function destroy($id): RedirectResponse
     {
-        Empleado::find($id)->delete();
-
-        return Redirect::route('empleados.index')
-            ->with('success', 'Empleado deleted successfully');
+        Empleado::findOrFail($id)->delete();
+        return redirect()->route('empleados.index')
+            ->with('success', 'Empleado eliminado exitosamente.');
     }
 }

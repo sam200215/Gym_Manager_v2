@@ -14,23 +14,28 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->engine = "InnoDB";
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('usuario_id')->nullable();
-            $table->string('nombre_completo', 50);
-            $table->string('dni', 15)->nullable();
-            $table->string('telefono', 15)->nullable();
+            $table->string('nombre_completo', 100);
+            $table->string('dni', 15)->unique();
+            $table->string('telefono', 15);
             $table->string('direccion', 255)->nullable();
-    
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
-            
+            $table->string('email', 100)->unique()->nullable();
+            $table->date('fecha_nacimiento');
+            $table->enum('genero', ['M', 'F']);
+            $table->string('contacto_emergencia', 100)->nullable();
+            $table->string('telefono_emergencia', 15)->nullable();
+            $table->text('condiciones_medicas')->nullable();
+            $table->date('fecha_registro')->useCurrent();
+            $table->boolean('activo')->default(true);
             $table->timestamps();
+            $table->softDeletes(); // Para eliminación suave
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        //
+        Schema::dropIfExists('clientes');
     }
 };

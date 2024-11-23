@@ -13,6 +13,15 @@ Auth::routes();
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // Rutas de perfil
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])
+        ->name('profile.edit');
+        
+    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])
+        ->name('profile.update');
+        
+    Route::put('/profile/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])
+        ->name('profile.password');
 
     // Rutas de administración
     Route::middleware(['check.permiso:gestionar-roles'])->group(function () {

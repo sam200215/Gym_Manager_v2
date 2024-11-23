@@ -62,7 +62,7 @@
                 <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                     <h3>Bienvenido de nuevo</h3>
                     <p class="text-muted">Nos alegra verte otra vez</p>
-                    <p>Accede a tu cuenta para disfrutar de todas nuestras funcionalidades.</p>
+                    <p>Accede a tu cuenta para administrar ....</p>
                     <div class="mt-4">
                         <p>¿No tienes una cuenta?</p>
                         <button class="btn btn-outline-primary" onclick="toggleForms()">Registrarse</button>
@@ -77,7 +77,7 @@
         <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
             <h3>¡Únete a nosotros!</h3>
             <p class="text-muted">Crea tu cuenta en unos simples pasos</p>
-            <p>Regístrate para acceder a todas nuestras funcionalidades y servicios exclusivos.</p>
+            <p>Regístrate para acceder a todas nuestras funcionalidades</p>
             <div class="mt-4">
                 <p>¿Ya tienes una cuenta?</p>
                 <button class="btn btn-outline-primary" onclick="toggleForms()">Iniciar Sesión</button>
@@ -165,7 +165,7 @@
 @endsection
 
 
-{{-- Agregar esto justo antes del cierre del body --}}
+
 @push('scripts')
     <script src="{{ asset('js/auth.js') }}"></script>
 @endpush

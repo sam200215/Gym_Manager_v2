@@ -49,9 +49,7 @@
                                         <td>{{ $user->rol->nombre ?? 'Sin rol' }}</td>
                                         <td>
                                             <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                                <a class="btn btn-sm btn-primary" href="{{ route('users.show', $user->id) }}">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
+                                                
                                                 <a class="btn btn-sm btn-success" href="{{ route('users.edit', $user->id) }}">
                                                     <i class="fa fa-edit"></i>
                                                 </a>

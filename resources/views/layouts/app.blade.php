@@ -142,12 +142,12 @@
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <!-- Perfil -->
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i class="fas fa-user-edit me-2"></i> {{ __('Mi Perfil') }}
                                 </a>
 
                                 <!-- Cambiar Contraseña -->
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i class="fas fa-key me-2"></i> {{ __('Cambiar Contraseña') }}
                                 </a>
 

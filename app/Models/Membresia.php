@@ -23,7 +23,7 @@ class Membresia extends Model
 {
     use RegistraBitacora;
     
-    protected $perPage = 20;
+    protected $perPage = 10;
 
     /**
      * The attributes that are mass assignable.
@@ -42,7 +42,7 @@ class Membresia extends Model
      */
     public function pagodetalls()
     {
-        return $this->hasMany(\App\Models\Pagodetall::class, 'id', 'membresia_id');
+        return $this->hasMany(Pagodetall::class, 'membresia_id', 'id');
     }
     
 }

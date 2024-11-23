@@ -36,6 +36,12 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
     @auth
+        <!--Dashboard-->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('home') }}">
+                <i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        
         @if(auth()->user()->hasPermiso('gestionar-roles'))
         <!-- Menú de Administración -->
         <li class="nav-item dropdown">

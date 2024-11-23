@@ -20,7 +20,7 @@ use App\Traits\RegistraBitacora;
 class Rol extends Model
 {
     use RegistraBitacora;
-    protected $perPage = 20;
+    protected $perPage = 10;
     protected $table = 'rols';
     /**
      * The attributes that are mass assignable.

@@ -24,7 +24,7 @@ class Pagodetall extends Model
 {
     use RegistraBitacora;
     
-    protected $perPage = 20;
+    protected $perPage = 10;
 
     /**
      * The attributes that are mass assignable.

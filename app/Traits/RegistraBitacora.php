@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 use App\Models\Bitacoracambio;
+use App\Models\User;
 
 trait RegistraBitacora
 {

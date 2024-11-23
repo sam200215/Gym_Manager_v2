@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\RegistraBitacora;
@@ -31,6 +32,7 @@ use App\Traits\RegistraBitacora;
 class Cliente extends Model
 {
     use SoftDeletes, RegistraBitacora;
+    use HasFactory;
     
     protected $perPage = 10;
 

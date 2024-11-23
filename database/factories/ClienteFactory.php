@@ -10,17 +10,17 @@ class ClienteFactory extends Factory
     {
         return [
             'nombre_completo' => $this->faker->name,
-            'dni' => $this->faker->unique()->numberBetween(10000000, 99999999),
-            'telefono' => $this->faker->phoneNumber,
+            'dni' => $this->faker->numerify('#############'), // 8 dígitos
+            'telefono' => $this->faker->numerify('########'), // 8 dígitos
             'direccion' => $this->faker->address,
             'email' => $this->faker->unique()->safeEmail,
-            'fecha_nacimiento' => $this->faker->date('Y-m-d', '2005-12-31'), // Fecha antes de 2005
-            'genero' => $this->faker->randomElement(['Masculino', 'Femenino']),
+            'fecha_nacimiento' => $this->faker->date('Y-m-d', '-18 years'),
+            'genero' => $this->faker->randomElement(['M', 'F']), // Cambiar a M o F según la validación
             'contacto_emergencia' => $this->faker->name,
-            'telefono_emergencia' => $this->faker->phoneNumber,
+            'telefono_emergencia' => $this->faker->numerify('########'),
             'condiciones_medicas' => $this->faker->optional()->sentence,
-            'fecha_registro' => now(), // Fecha actual
-            'activo' => $this->faker->boolean(80), // 80% de probabilidades de ser true
+            'fecha_registro' => now(),
+            'activo' => true
         ];
     }
 }

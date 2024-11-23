@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <div class="text-uppercase fw-bold text-primary mb-1">Clientes Activos</div>
+                            <div class="text-uppercase fw-bold text-primary mb-1">Clientes Registrados</div>
                             <div class="h4 mb-0 fw-bold">{{ $clientesActivos }}</div>
                         </div>
                         <div class="col-auto">

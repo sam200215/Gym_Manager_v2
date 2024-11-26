@@ -20,13 +20,17 @@ class CheckPermiso
      * @return mixed
      */
     public function handle(Request $request, Closure $next, string $permiso)
-    {
-        if (!Auth::check() || !Auth::user()->hasPermiso($permiso)) {
-            abort(403, 'No tienes permiso para acceder a esta sección.');
-        }
-        
+{
+    // Asignar a $user para mayor claridad
+    /** @var User $user */
+    $user = Auth::user();
 
-        return $next($request);
+    // Verificar permisos de usuario
+    if (!$user || !$user->hasPermiso($permiso)) {
+        abort(403, 'No tienes permiso para acceder a esta sección.');
     }
+
+    return $next($request);
+}
 }
 

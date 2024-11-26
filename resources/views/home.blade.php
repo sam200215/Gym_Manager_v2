@@ -1,11 +1,28 @@
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container-fluid">
     <!-- Fila de Tarjetas de Resumen -->
     <div class="row mb-4">
-        <!-- Clientes Activos -->
+
+        <!-- Bienvenida y nombre de usuario -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-secondary border-4 shadow h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                        <div class="text-uppercase fw-bold text-secondary mb-1">Bienvenido a Gym Manager</div>
+                            <h1 class="h3 mb-0 text-gray-800"> {{ auth()->user()->name }}</h1>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes Registrados -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-start border-primary border-4 shadow h-100">
                 <div class="card-body">
@@ -88,55 +105,55 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Gráfico de Membresías
-    const membresiasOptions = {
-        series: [{
-            data: @json($membresiasData)
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                horizontal: true,
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gráfico de Membresías
+        const membresiasOptions = {
+            series: [{
+                data: @json($membresiasData)
+            }],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
+                }
+            },
+            colors: ['#4e73df'],
+            xaxis: {
+                categories: @json($membresiasLabels)
             }
-        },
-        colors: ['#4e73df'],
-        xaxis: {
-            categories: @json($membresiasLabels)
-        }
-    };
+        };
 
-    new ApexCharts(document.querySelector("#membresiasChart"), membresiasOptions).render();
+        new ApexCharts(document.querySelector("#membresiasChart"), membresiasOptions).render();
 
-    // Gráfico de Ingresos
-    const ingresosOptions = {
-        series: [{
-            name: 'Ingresos',
-            data: @json($ingresosData)
-        }],
-        chart: {
-            type: 'area',
-            height: 350
-        },
-        colors: ['#36b9cc'],
-        xaxis: {
-            categories: @json($meses)
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return 'L. ' + val.toFixed(2)
+        // Gráfico de Ingresos
+        const ingresosOptions = {
+            series: [{
+                name: 'Ingresos',
+                data: @json($ingresosData)
+            }],
+            chart: {
+                type: 'area',
+                height: 350
+            },
+            colors: ['#36b9cc'],
+            xaxis: {
+                categories: @json($meses)
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return 'L. ' + val.toFixed(2)
+                    }
                 }
             }
-        }
-    };
+        };
 
-    new ApexCharts(document.querySelector("#ingresosChart"), ingresosOptions).render();
-});
+        new ApexCharts(document.querySelector("#ingresosChart"), ingresosOptions).render();
+    });
 </script>
 @endpush
 @endsection

@@ -64,15 +64,21 @@
                                                 <a class="btn btn-sm btn-primary" href="{{ route('clientes.show', $cliente->id) }}">
                                                     <i class="fa fa-fw fa-eye"></i>
                                                 </a>
+                                                <!-- solo si tiene el permiso de editar clientes -->
+                                                @if(auth()->user()->hasPermiso('editar-clientes'))
                                                 <a class="btn btn-sm btn-success" href="{{ route('clientes.edit', $cliente->id) }}">
                                                     <i class="fa fa-fw fa-edit"></i>
                                                 </a>
+                                                @endif
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" 
+                                                <!-- solo si tiene el permiso de eliminar clientes -->
+                                                @if(auth()->user()->hasPermiso('eliminar-clientes'))
+                                                <button type="submit" class="btn btn-danger btn-sm"
                                                         onclick="return confirm('¿Está seguro de eliminar este cliente?')">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </button>
+                                                @endif
                                             </form>
                                         </td>
                                     </tr>

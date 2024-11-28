@@ -1,13 +1,14 @@
-
 @extends('layouts.app')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<div class="container d-flex justify-content-center align-items-center auth-container">
     <div class="row w-100 max-w-4xl">
         <!-- Formulario de Login -->
         <div class="col-md-6" id="loginForm">
             <div class="card h-100">
                 <div class="card-header">
+                    <img src="{{ asset('images/logo01.png') }}" alt="Logo" class="auth-logo mx-auto d-block">
                     <h3 class="text-center">Iniciar Sesión</h3>
                     <p class="text-center text-muted">Ingresa tus credenciales para acceder</p>
                 </div>
@@ -15,41 +16,43 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group mb-3">
-                            <label for="email">{{ __('Correo Electrónico') }}</label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
-                                name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                    name="email" placeholder="Correo electrónico" value="{{ old('email') }}" required>
+                            </div>
                             @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="password">{{ __('Contraseña') }}</label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
-                                name="password" required autocomplete="current-password">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                    name="password" placeholder="Contraseña" required>
+                            </div>
                             @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember" 
-                                    {{ old('remember') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="remember">
-                                    {{ __('Recordarme') }}
-                                </label>
+                                <input type="checkbox" class="form-check-input" name="remember" id="remember">
+                                <label class="form-check-label" for="remember">Recordarme</label>
                             </div>
                         </div>
 
-                        <div class="d-grid">
+                        <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
-                                {{ __('Iniciar Sesión') }}
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
                             </button>
+                            @if (Route::has('password.request'))
+                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                            @endif
                         </div>
                     </form>
                 </div>
@@ -60,85 +63,94 @@
         <div class="col-md-6" id="loginMessage">
             <div class="card h-100 bg-light">
                 <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                    <h3>Bienvenido de nuevo</h3>
+                    <i class="fas fa-dumbbell fa-3x mb-4 text-primary"></i>
+                    <h3>¡Bienvenido de nuevo!</h3>
                     <p class="text-muted">Nos alegra verte otra vez</p>
-                    <p>Accede a tu cuenta para administrar ....</p>
+                    <p>Bienvenido al panel administrativo. Controla, organiza y mejora.</p>
                     <div class="mt-4">
                         <p>¿No tienes una cuenta?</p>
-                        <button class="btn btn-outline-primary" onclick="toggleForms()">Registrarse</button>
+                        <button class="btn btn-outline-primary" onclick="toggleForms()">
+                            <i class="fas fa-user-plus me-2"></i>Registrarse
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Mensaje de Registro (inicialmente oculto) -->
-<div class="col-md-6" id="registerMessage" style="display: none;">
-    <div class="card h-100 bg-light">
-        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-            <h3>¡Únete a nosotros!</h3>
-            <p class="text-muted">Crea tu cuenta en unos simples pasos</p>
-            <p>Regístrate para acceder a todas nuestras funcionalidades</p>
-            <div class="mt-4">
-                <p>¿Ya tienes una cuenta?</p>
-                <button class="btn btn-outline-primary" onclick="toggleForms()">Iniciar Sesión</button>
+        <!-- Mensaje de Registro -->
+        <div class="col-md-6" id="registerMessage" style="display: none;">
+            <div class="card h-100 bg-light">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                    <i class="fas fa-running fa-3x mb-4 text-primary"></i>
+                    <h3>¡Únete a nosotros!</h3>
+                    <p class="text-muted">Crea tu cuenta en unos simples pasos</p>
+                    <p>Crea tu cuenta para acceder al panel de administración del gimnasio.</p>
+                    <p>Recuerda que debes tener un correo electrónico válido para registrarte.</p>
+                    <p>Una vez registrado, ponte en contacto con el <span class="fw-bold">administrador</span> para que te asigne un <span class="fw-bold">rol</span> y los <span class="fw-bold">permisos</span> correspondientes.</p>
+                    <div class="mt-4">
+                        <p>¿Ya tienes una cuenta?</p>
+                        <button class="btn btn-outline-primary" onclick="toggleForms()">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-
-        <!-- Formulario de Registro (inicialmente oculto) -->
-<div class="col-md-6" id="registerForm" style="display: none;">
-    <div class="card h-100">
-        <div class="card-header">
-            <h3 class="text-center">Registro</h3>
-            <p class="text-center text-muted">Crea tu nueva cuenta</p>
-        </div>
-        <div class="card-body">
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
+        <!-- Formulario de Registro -->
+        <div class="col-md-6" id="registerForm" style="display: none;">
+            <div class="card h-100">
+                <div class="card-header">
+                    <img src="{{ asset('images/logo01.png') }}" alt="Logo" class="auth-logo mx-auto d-block">
+                    <h3 class="text-center">Crear Cuenta</h3>
+                    <p class="text-center text-muted">Completa tus datos para registrarte</p>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
                         <div class="form-group mb-3">
-                            <label for="name">{{ __('Nombre') }}</label>
-                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" 
-                                name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    name="name" placeholder="Nombre completo" value="{{ old('name') }}" required>
+                            </div>
                             @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="register_email">{{ __('Correo Electrónico') }}</label>
-                            <input id="register_email" type="email" class="form-control @error('email') is-invalid @enderror" 
-                                name="email" value="{{ old('email') }}" required autocomplete="email">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                    name="email" placeholder="Correo electrónico" value="{{ old('email') }}" required>
+                            </div>
                             @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="register_password">{{ __('Contraseña') }}</label>
-                            <input id="register_password" type="password" class="form-control @error('password') is-invalid @enderror" 
-                                name="password" required autocomplete="new-password">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                    name="password" placeholder="Contraseña" required>
+                            </div>
                             @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                            <span class="invalid-feedback d-block">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="password-confirm">{{ __('Confirmar Contraseña') }}</label>
-                            <input id="password-confirm" type="password" class="form-control" 
-                                name="password_confirmation" required autocomplete="new-password">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control"
+                                    name="password_confirmation" placeholder="Confirmar contraseña" required>
+                            </div>
                         </div>
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">
-                                {{ __('Registrarse') }}
+                                <i class="fas fa-user-plus me-2"></i>Crear Cuenta
                             </button>
                         </div>
                     </form>
@@ -146,41 +158,11 @@
             </div>
         </div>
 
-        <!-- Mensaje de Registro (inicialmente oculto) -->
-        <div class="col-md-6" id="registerMessage" style="display: none;">
-            <div class="card h-100 bg-light">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                    <h3>¡Únete a nosotros!</h3>
-                    <p class="text-muted">Crea tu cuenta en unos simples pasos</p>
-                    <p>Regístrate para acceder a todas nuestras funcionalidades y servicios exclusivos.</p>
-                    <div class="mt-4">
-                        <p>¿Ya tienes una cuenta?</p>
-                        <button class="btn btn-outline-primary" onclick="toggleForms()">Iniciar Sesión</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 @endsection
 
-
-
 @push('scripts')
-    <script src="{{ asset('js/auth.js') }}"></script>
+<script src="{{ asset('js/auth.js') }}"></script>
 @endpush
-
-<style>
-.card {
-    margin: 1rem;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-}
-
-.min-vh-100 {
-    min-height: 100vh;
-}
-
-.max-w-4xl {
-    max-width: 1200px;
-}
-</style>

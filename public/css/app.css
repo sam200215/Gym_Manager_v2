@@ -1,11 +1,13 @@
 /* Estilos generales de la página de autenticación */
 .auth-container {
-    min-height: 100vh;
+    min-height: 20vh;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 15px;
 }
 
 .max-w-4xl {
     max-width: 1200px;
+    max-height: 100px;
 }
 
 /* Estilos de las tarjetas */
@@ -14,7 +16,7 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     border-radius: 15px;
     transition: transform 0.3s ease;
-    background: linear-gradient(145deg, #ffffff, #f6f6f6);
+    background: linear-gradient(145deg, #e8f0f3, #f6f6f6);
 }
 
 .card:hover {

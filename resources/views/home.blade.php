@@ -23,6 +23,9 @@
         </div>
 
         <!-- Clientes Registrados -->
+         <!--Validar si el usuario es administrador o gerente para mostrar clientes registrados-->
+
+        
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-start border-primary border-4 shadow h-100">
                 <div class="card-body">

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('membresia_id');
             $table->integer('cantidad');
             $table->decimal('subtotal', 10, 2);
+            $table->decimal('impuesto',10,2);
+            $table->decimal('descuento',10,2);
     
             $table->foreign('pago_id')->references('id')->on('pagos')->onDelete('cascade');
             $table->foreign('membresia_id')->references('id')->on('membresias')->onDelete('cascade');

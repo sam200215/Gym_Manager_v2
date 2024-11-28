@@ -33,8 +33,9 @@ class PagoController extends Controller
      */
     public function create(): View
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente::where('estado', '0')->get();
         $membresias = Membresia::all();
+
 
         return view('pago.create', compact('clientes', 'membresias'));
     }

@@ -23,13 +23,17 @@ Crear Nuevo Pago
                 <div class="card-body bg-white">
                     <form method="POST" action="{{ route('pagos.store') }}" role="form">
                         @csrf
-
                         <div class="row">
                             <!-- Sección de Pago -->
                             <div class="col-md-6">
                                 <h4 class="mb-3">Información del Pago</h4>
+                                <div class="form-group mb-3 d-flex align-items-center">
+                                    <label for="cliente_id" class="me-2"><span class="text-danger">*</span>Cliente</label>
+                                    <a href="{{ route('clientes.create') }}" class="btn btn-success btn-sm ms-auto">
+                                        <i class="fa fa-plus"></i> Nuevo Cliente
+                                    </a>
+                                </div>
                                 <div class="form-group mb-3">
-                                    <label for="cliente_id"><span class="text-danger">*</span>Cliente</label>
                                     <select name="cliente_id" class="form-control @error('cliente_id') is-invalid @enderror" required>
                                         <option value="">Seleccione un cliente</option>
                                         @foreach($clientes as $cliente)
@@ -71,10 +75,29 @@ Crear Nuevo Pago
                                 </div>
 
                                 <div class="form-group mb-3">
+                                    <label for="descuento">Descuento (%)</label>
+                                    <input type="number" name="descuento" id="descuento" 
+                                        class="form-control @error('descuento') is-invalid @enderror"
+                                        value="0" min="0" max="100" onchange="calcularTotal()">
+                                    @error('descuento')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group mb-3">
                                     <label for="subtotal">Subtotal</label>
                                     <div class="input-group">
                                         <span class="input-group-text">L. </span>
                                         <input type="number" name="subtotal" id="subtotal"
+                                            class="form-control" step="0.01" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="isv">ISV (15%)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">L. </span>
+                                        <input type="number" name="isv" id="isv" 
                                             class="form-control" step="0.01" readonly>
                                     </div>
                                 </div>
@@ -110,14 +133,23 @@ Crear Nuevo Pago
     function calcularTotal() {
         const membresia = document.getElementById('membresia_id');
         const cantidad = parseInt(document.getElementById('cantidad').value) || 0;
-        const precio = parseFloat(membresia.options[membresia.selectedIndex].dataset.precio) || 0;
+        const precio = parseFloat(membresia.options[membresia.selectedIndex]?.dataset?.precio) || 0;
+        const descuento = parseFloat(document.getElementById('descuento').value) || 0;
+        const isvRate = 0.15; // 15% ISV
 
-        const subtotal = precio * cantidad;
+        let subtotal = precio * cantidad;
+        let descuentoAplicado = subtotal * (descuento / 100);
+        let subtotalConDescuento = subtotal - descuentoAplicado;
+        let isv = subtotalConDescuento * isvRate;
+        let total = subtotalConDescuento + isv;
+
         document.getElementById('subtotal').value = subtotal.toFixed(2);
-        document.getElementById('total').value = subtotal.toFixed(2);
+        document.getElementById('isv').value = isv.toFixed(2);
+        document.getElementById('total').value = total.toFixed(2);
     }
 
     document.addEventListener('DOMContentLoaded', calcularTotal);
 </script>
 @endpush
 @endsection
+
